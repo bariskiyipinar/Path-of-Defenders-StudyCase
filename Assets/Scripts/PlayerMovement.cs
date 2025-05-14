@@ -1,7 +1,7 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private Animator animator;
     [SerializeField] private float moveSpeed = 5f;

@@ -5,7 +5,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform SpawnPoint;
     [SerializeField] private GameObject[] EnemyPrefabList;
-    [SerializeField] private float timeBetweenWaves = 5f;
+    [SerializeField] private float timeBetweenWaves = 10f;
     [SerializeField] private int enemyCountPerWave = 3;
 
     private int currentWaveIndex = 0;
