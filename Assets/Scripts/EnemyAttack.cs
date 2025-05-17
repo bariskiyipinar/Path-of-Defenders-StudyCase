@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.TerrainUtils;
 using UnityEngine.UI;
+
 public enum EnemyType { EnemyGirl,EnemyMale,EnemyRobot}
+
 public class EnemyAttack : MonoBehaviour
 {
     private Transform player; 
@@ -25,15 +28,17 @@ public class EnemyAttack : MonoBehaviour
 
     private Canvas healthCanvas;
   
+    private bool isColorRed = false;
+    private SpriteRenderer sp;
 
-
+    
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         player = GameObject.Find("Player").transform;
+        sp = GetComponent<SpriteRenderer>();
 
-     
         healthCanvas = HealthBar.transform.GetComponentInParent<Canvas>();
 
       
@@ -51,6 +56,12 @@ public class EnemyAttack : MonoBehaviour
 
     private void Update()
     {
+
+        if (isDead) return;
+        if (agent == null || !agent.isOnNavMesh || !agent.enabled)
+            return;
+
+
         float distance = Vector3.Distance(transform.position, player.position);
 
         if (distance <= attackRange)
@@ -83,16 +94,17 @@ public class EnemyAttack : MonoBehaviour
             {
                 case EnemyType.EnemyGirl:
                     animator.SetTrigger("IsAttack");
+
                     break;
                 case EnemyType.EnemyMale:
-                    animator.SetTrigger("RangedAttack");
+                    animator.SetTrigger("IsAttack");
                     break;
                 case EnemyType.EnemyRobot:
-                    animator.SetTrigger("TankAttack");
+                    animator.SetTrigger("IsAttack");
                     break;
             }
 
-            player.GetComponent<PlayerHealth>()?.TakeDamage(1);
+            player.GetComponent<PlayerHealth>()?.TakeDamage(0.5f);
             lastAttackTime = Time.time;
         }
     }
@@ -122,6 +134,13 @@ public class EnemyAttack : MonoBehaviour
         if (isDead) return; 
 
         currentHealth -= damage;
+
+        if (!isColorRed)
+        {
+            StartCoroutine(DamageColorEffect());
+        }
+
+
         HealthBarupdate();
 
         if (currentHealth <= 0)
@@ -130,29 +149,23 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
+    private IEnumerator DamageColorEffect()
+    {
+        isColorRed = true;
+        sp.color = Color.red;
+
+        yield return new WaitForSeconds(0.3f);  
+
+        sp.color = Color.white;
+        isColorRed = false;
+    }
     private void Die()
     {
         isDead = true;
 
-        
-        switch (enemyType)
-        {
-            case EnemyType.EnemyGirl:
-                animator.SetTrigger("IsDead");
-                break;
-            case EnemyType.EnemyMale:
-                animator.SetTrigger("IsDead");
-                break;
-            case EnemyType.EnemyRobot:
-                animator.SetTrigger("IsDead");
-                break;
-        }
-
-     
         agent.isStopped = true;
-        agent.enabled = false;
 
-      
+
         Collider col = GetComponent<Collider>();
         if (col != null)
             col.enabled = false;
@@ -161,7 +174,7 @@ public class EnemyAttack : MonoBehaviour
         HealthBar.gameObject.SetActive(false);
 
        
-        Destroy(gameObject, 2f);
+        Destroy(gameObject);
     }
 
 
@@ -181,9 +194,9 @@ public class EnemyAttack : MonoBehaviour
         {
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             playerHealth.DisableRegen();      
-            playerHealth.TakeDamage(1);          
-
-            Destroy(this.gameObject);      
+            playerHealth.TakeDamage(2);
+            animator.SetTrigger("IsCheer");
+            Destroy(gameObject, 2f);
         }
     }
 

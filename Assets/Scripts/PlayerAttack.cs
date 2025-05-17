@@ -9,13 +9,15 @@ public class PlayerAttack : MonoBehaviour
     private float lastAttackTime;
     private Animator animator;
     [SerializeField] private ParticleSystem PunchPower;
-
+    [SerializeField] private AudioSource punchSound;
     void Start()
     {
         animator = GetComponent<Animator>();
+
         if (PunchPower != null)
         {
-            PunchPower.Stop(); // Baþlangýçta durdur
+            PunchPower.Stop();
+            PunchPower.gameObject.SetActive(false);
         }
     }
 
@@ -46,16 +48,18 @@ public class PlayerAttack : MonoBehaviour
 
         if (closestEnemy != null)
         {
-            // Saldýrý animasyonunu tetikle
+            
             animator.SetTrigger("IsAttack");
 
-            // Partikül sistemini baþlat (eðer durduysa)
+
+
+            PunchPower.gameObject.SetActive(true);
             if (PunchPower != null && !PunchPower.isPlaying)
             {
                 PunchPower.Play();
             }
 
-            // En yakýn düþmaný vur
+    
             closestEnemy.EnemyTakeDamage(1);
 
             lastAttackTime = Time.time;
@@ -63,6 +67,20 @@ public class PlayerAttack : MonoBehaviour
         else
         {
             animator.SetBool("IsIdle", true);
+
+
+
+            if (punchSound != null && punchSound.isPlaying)
+            {
+                punchSound.Stop();  
+            }
         }
     }
+
+    public void PlayPunchSound()
+    {
+        if (punchSound != null)
+            punchSound.Play();
+    }
+
 }

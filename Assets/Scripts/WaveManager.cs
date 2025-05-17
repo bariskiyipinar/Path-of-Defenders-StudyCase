@@ -5,7 +5,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform SpawnPoint;
     [SerializeField] private GameObject[] EnemyPrefabList;
-    [SerializeField] private float timeBetweenWaves = 10f;
+    [SerializeField] private float timeBetweenWaves = 20f;
     [SerializeField] private int enemyCountPerWave = 3;
 
     private int currentWaveIndex = 0;
@@ -23,15 +23,24 @@ public class WaveManager : MonoBehaviour
 
             for (int i = 0; i < enemyCountPerWave; i++)
             {
-                Instantiate(currentEnemyPrefab, SpawnPoint.position, Quaternion.identity);
-                yield return new WaitForSeconds(6f); 
+                Instantiate(currentEnemyPrefab, SpawnPoint.position, Quaternion.Euler(0,180f,0));
+                yield return new WaitForSeconds(10f);
+               
             }
-
+            enemyCountPerWave++;
             currentWaveIndex++;
+
+            if(Input.GetKeyDown(KeyCode.Space)) {
+                yield return new WaitForSeconds(timeBetweenWaves-5f);
+            }
             yield return new WaitForSeconds(timeBetweenWaves);
+
+          
         }
 
     }
+
+
 
 
 }
