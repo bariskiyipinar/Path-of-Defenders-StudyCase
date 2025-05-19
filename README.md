@@ -37,7 +37,7 @@
 | Tuş         | İşlev                         |
 |-------------|-------------------------------|
 | `Space`     | Sıradaki düşman dalgasını erken başlatır |
-| WASD        | Hareket                       |
+| WASD        | Karakter Hareketi             |
 
 ## Kaynaklar
 
