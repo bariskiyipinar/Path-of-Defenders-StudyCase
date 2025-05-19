@@ -41,3 +41,5 @@
 
 ## 📁 Proje Yapısı
 
+![Ana Menü](Assets/Screenshots/111.png)
+![Oyun İçi](Assets/Screenshots/ingame_wave.png)
