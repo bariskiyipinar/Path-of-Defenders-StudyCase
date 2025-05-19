@@ -63,8 +63,9 @@ public class WaveManager : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-      
+        Destroy(SoundManager.instance.gameObject);
         SceneManager.LoadScene("Menu");
+
     }
 
 
