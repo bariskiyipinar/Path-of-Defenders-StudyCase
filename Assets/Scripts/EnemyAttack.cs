@@ -16,7 +16,7 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private Image HealthBar;
     private float currentHealth;
-    private float maxHealth = 5;
+    private float maxHealth;
 
     private bool isDead = false;
 
@@ -111,21 +111,21 @@ public class EnemyAttack : MonoBehaviour
 
     private void SetHealth()
     {
-
         switch (enemyType)
         {
             case EnemyType.EnemyGirl:
+                maxHealth = 5f;
                 currentHealth = maxHealth;
                 break;
             case EnemyType.EnemyMale:
-                currentHealth = maxHealth * 1.2f;
+                maxHealth = 6f;  
+                currentHealth = maxHealth;
                 break;
             case EnemyType.EnemyRobot:
-                currentHealth = maxHealth * 1.3f;
+                maxHealth = 6.5f; 
+                currentHealth = maxHealth;
                 break;
         }
-
-
     }
 
 
@@ -181,10 +181,10 @@ public class EnemyAttack : MonoBehaviour
 
     void HealthBarupdate()
     {
-        float avg = Mathf.Clamp01(currentHealth / maxHealth);
-
-        HealthBar.transform.localScale = new Vector3(avg, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
+        float healthRatio = Mathf.Clamp01(currentHealth / maxHealth);
+        HealthBar.transform.localScale = new Vector3(healthRatio, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
     }
+
 
 
 
