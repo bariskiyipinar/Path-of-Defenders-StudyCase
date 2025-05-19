@@ -37,7 +37,13 @@
 | Tuş         | İşlev                         |
 |-------------|-------------------------------|
 | `Space`     | Sıradaki düşman dalgasını erken başlatır |
-| Fare (Mouse)| Kule yerleştirme ve seçim     |
+| WASD        | Hareket                       |
+
+## Kaynaklar
+
+- https://assetstore.unity.com/
+- https://kenney.nl/
+- https://freesound.org/
 
 ## 📁 Proje Yapısı
 
